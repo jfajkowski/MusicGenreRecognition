@@ -1,5 +1,6 @@
 from langdetect import detect
 from langdetect import PROFILES_DIRECTORY
+from langdetect import lang_detect_exception
 from tqdm import tqdm
 import os
 
@@ -31,11 +32,11 @@ def sort_paths_by_lyrics_language():
     for path in bar_wrapper:
         file = open(path)
         try:
-            language = detect(file.read())
+            language = detect(file.read().decode('utf-8', errors='ignore'))
             sorted_paths.get(language).append(path)
-        except Exception:
+        except lang_detect_exception.LangDetectException as e:
             sorted_paths.get('missing').append(path)
-
+            print "\n[ERROR] Can't detect file \"%s\": " % path + "%s" % e
     return sorted_paths
 
 
