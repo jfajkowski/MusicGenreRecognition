@@ -23,7 +23,7 @@ def load_dictionary():
 
 
 def format_text(text):
-    text = re.sub("[^'\w]+|", " ", text)
+    text = re.sub("\W+|[_]+|\d+", " ", text)
     return text.lower().split()
 
 
@@ -40,7 +40,7 @@ def load_stopwords():
     directory = main_directory + "stopwords/"
 
     with open(directory + language + '.txt') as file:
-        stoplist = file.readlines()
+        stoplist = file.read().splitlines()
 
     return stoplist
 
@@ -58,9 +58,9 @@ if __name__ == '__main__':
     main_directory = '/home/fajqa/Documents/Python/MusicGenreRecognition/resources/'
     language = 'en'
 
-    dictionary = load_dictionary()
-    dictionary.save(main_directory + "dictionary_lower_case")
-    dictionary.save_as_text(main_directory + "dictionary_lower_case.txt")
+    dictionary = corpora.Dictionary.load('/home/fajqa/Documents/Python/MusicGenreRecognition/resources/saved/dictionary_lower_case.dict')#load_dictionary()
+    #dictionary.save(main_directory + "dictionary_lower_case.dict")
+    #dictionary.save_as_text(main_directory + "dictionary_lower_case.txt")
     filter_dictionary(dictionary)
-    dictionary.save(main_directory + "filtered_dictionary_lower_case")
-    dictionary.save_as_text(main_directory + "filtered_dictionary_lower_case.txt")
+    dictionary.save(main_directory + "saved/filtered_dictionary_lower_case.dict")
+    dictionary.save_as_text(main_directory + "saved/filtered_dictionary_lower_case.txt", sort_by_word=False)
